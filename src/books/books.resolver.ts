@@ -26,7 +26,7 @@ export class BooksResolver {
   }
 
   @ResolveField(() => WritingConnectionEntity, {name: 'writings'})
-  getUser(
+  resolveWritings(
     @Parent() {id}: {id: string},
     @Args()
     {orderBy, ...pagination}: BookWritingsArgs,
@@ -39,14 +39,12 @@ export class BooksResolver {
   }
 
   @Query(() => BookEntity, {name: 'book'})
-  async getAuthor(
-    @Args('id', {type: () => ID}) id: string,
-  ): Promise<BookEntity> {
+  async getBook(@Args('id', {type: () => ID}) id: string): Promise<BookEntity> {
     return this.books.getById(id);
   }
 
   @Query(() => FindBookPayload, {name: 'findBook'})
-  async findAuthor(
+  async findBook(
     @Args({type: () => FindBookArgs}) {id}: FindBookArgs,
   ): Promise<FindBookPayload> {
     const result = await this.books.findById({id});
@@ -54,7 +52,7 @@ export class BooksResolver {
   }
 
   @Query(() => BookConnectionEntity, {name: 'manyBooks'})
-  async manyAuthors(
+  async manyBooks(
     @Args({type: () => ManyBooksArgs})
     {orderBy, ...pagination}: ManyBooksArgs,
   ): Promise<BookConnectionEntity> {

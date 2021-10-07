@@ -29,6 +29,19 @@ export class AuthorsResolver {
     return this.authors.getById(reference.id);
   }
 
+  @ResolveField(() => WritingConnectionEntity, {name: 'writings'})
+  resolveWritings(
+    @Parent() {id}: AuthorEntity,
+    @Args()
+    {orderBy, ...pagination}: AuthorWritingsArgs,
+  ) {
+    return this.authors.getWritings(
+      id,
+      pagination,
+      this.authors.convertWritingOrderBy(orderBy),
+    );
+  }
+
   @Query(() => AuthorEntity, {name: 'author'})
   async getAuthor(
     @Args('id', {type: () => ID}) id: string,
@@ -42,19 +55,6 @@ export class AuthorsResolver {
   ): Promise<FindAuthorPayload> {
     const result = await this.authors.findById({id});
     return {author: result};
-  }
-
-  @ResolveField(() => WritingConnectionEntity, {name: 'writings'})
-  getUser(
-    @Parent() {id}: AuthorEntity,
-    @Args()
-    {orderBy, ...pagination}: AuthorWritingsArgs,
-  ) {
-    return this.authors.getWritings(
-      id,
-      pagination,
-      this.authors.convertWritingOrderBy(orderBy),
-    );
   }
 
   @Query(() => AuthorConnectionEntity, {name: 'manyAuthors'})
