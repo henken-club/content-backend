@@ -7,33 +7,6 @@ import {
   registerEnumType,
 } from '@nestjs/graphql';
 
-@InterfaceType()
-export abstract class Node {
-  @Field((type) => ID)
-  id!: string;
-}
-
-@InterfaceType()
-export abstract class Edge {
-  @Field((type) => String)
-  cursor!: string;
-
-  @Field((type) => Node)
-  node!: Node;
-}
-
-@InterfaceType()
-export abstract class Connection {
-  @Field((type) => [Edge])
-  edges!: Edge[];
-
-  @Field((type) => PageInfoEntity)
-  pageInfo!: PageInfoEntity;
-
-  @Field((type) => Int)
-  totalCount!: number;
-}
-
 @ObjectType('PageInfo')
 export class PageInfoEntity {
   @Field((type) => Boolean)
@@ -63,4 +36,31 @@ export abstract class PaginationArgs {
 
   last!: number | null;
   before!: string | null;
+}
+
+@InterfaceType()
+export abstract class Node {
+  @Field((type) => ID)
+  id!: string;
+}
+
+@InterfaceType()
+export abstract class Edge {
+  @Field((type) => String)
+  cursor!: string;
+
+  @Field((type) => Node)
+  node!: Node;
+}
+
+@InterfaceType()
+export abstract class Connection {
+  @Field((type) => [Edge])
+  edges!: Edge[];
+
+  @Field((type) => PageInfoEntity)
+  pageInfo!: PageInfoEntity;
+
+  @Field((type) => Int)
+  totalCount!: number;
 }

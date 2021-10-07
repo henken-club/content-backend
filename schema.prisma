@@ -15,6 +15,12 @@ model Book {
   writings Writing[]
 }
 
+model BookSeries {
+  id String @id @default(cuid())
+
+  title String
+}
+
 model Author {
   id String @id @default(cuid())
 

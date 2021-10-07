@@ -6,6 +6,7 @@ import {AppConfig} from './app.config';
 import {WritingsResolverModule} from './writings/writings.resolver.module';
 import {AuthorsResolverModule} from './authors/authors.resolver.module';
 import {BooksResolverModule} from './books/books.resolver.module';
+import {BookSeriesResolverModule} from './bookseries/bookseries.resolver.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import {BooksResolverModule} from './books/books.resolver.module';
       }),
     }),
     BooksResolverModule,
+    BookSeriesResolverModule,
     AuthorsResolverModule,
     WritingsResolverModule,
   ],
