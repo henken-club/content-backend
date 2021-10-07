@@ -18,7 +18,9 @@ import {
   BookSeriesEdgeEntity,
   BookSeriesEntity,
 } from './bookseries.entity';
+import {BookSeriesPartConnectionEntity} from './bookseries-parts.entity';
 import {ManyBookSeriesArgs} from './dto/many-bookseries.dto';
+import {BookSeriesPartsArgs} from './dto/parts.dto';
 
 @Resolver(() => BookSeriesEntity)
 export class BookSeriesResolver {
@@ -27,6 +29,19 @@ export class BookSeriesResolver {
   @ResolveReference()
   resolveReference(reference: {id: string}) {
     return this.bookSeries.getById(reference.id);
+  }
+
+  @ResolveField(() => BookSeriesPartConnectionEntity, {name: 'parts'})
+  async resolveAuthor(
+    @Parent() {id}: BookSeriesEntity,
+    @Args()
+    {orderBy, ...pagination}: BookSeriesPartsArgs,
+  ): Promise<BookSeriesPartConnectionEntity> {
+    return this.bookSeries.getParts(
+      id,
+      pagination,
+      this.bookSeries.convertPartsOrderBy(orderBy),
+    );
   }
 
   @Query(() => BookSeriesEntity, {name: 'bookSeries'})

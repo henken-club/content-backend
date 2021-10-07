@@ -13,12 +13,30 @@ model Book {
   title String
 
   writings Writing[]
+
+  series BookSeriesPart[]
 }
 
 model BookSeries {
   id String @id @default(cuid())
 
   title String
+
+  parts BookSeriesPart[]
+}
+
+model BookSeriesPart {
+  id String @id @default(cuid())
+
+  order Float
+
+  series   BookSeries @relation(fields: [seriesId], references: [id])
+  seriesId String
+
+  book   Book   @relation(fields: [bookId], references: [id])
+  bookId String
+
+  @@unique([seriesId, bookId])
 }
 
 model Author {
