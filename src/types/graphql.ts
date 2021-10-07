@@ -7,6 +7,10 @@
 
 /* tslint:disable */
 /* eslint-disable */
+export enum AuthorWritingsOrderField {
+    BOOK_TITLE = "BOOK_TITLE"
+}
+
 export enum BookWritingsOrderField {
     AUTHOR_NAME = "AUTHOR_NAME"
 }
@@ -16,17 +20,13 @@ export enum OrderDirection {
     DESC = "DESC"
 }
 
-export enum AuthorWritingsOrderField {
-    BOOK_TITLE = "BOOK_TITLE"
+export interface AuthorWritingsOrder {
+    field: AuthorWritingsOrderField;
+    direction: OrderDirection;
 }
 
 export interface BookWritingsOrder {
     field: BookWritingsOrderField;
-    direction: OrderDirection;
-}
-
-export interface AuthorWritingsOrder {
-    field: AuthorWritingsOrderField;
     direction: OrderDirection;
 }
 
