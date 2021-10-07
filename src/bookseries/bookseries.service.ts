@@ -6,6 +6,7 @@ import {
   BookSeriesOrder,
   BookSeriesOrderField,
 } from './bookseries.entity';
+import {BookSeriesPartsOrder, BookSeriesPartsOrderField} from './dto/parts.dto';
 
 import {PrismaService} from '~/prisma/prisma.service';
 
@@ -53,6 +54,43 @@ export class BookSeriesService {
           select: {id: true},
         }),
       () => this.prisma.bookSeries.count({}),
+      pagination,
+    );
+  }
+
+  convertPartsOrderBy({
+    field,
+    direction,
+  }: BookSeriesPartsOrder): [{order: 'asc' | 'desc'}] {
+    switch (field) {
+      case BookSeriesPartsOrderField.ORDER:
+        return [{order: direction}];
+    }
+    throw new Error(`Unexpected order field: ${field}`);
+  }
+
+  async getParts(
+    id: string,
+    pagination: {
+      first: number | null;
+      after: string | null;
+      last: number | null;
+      before: string | null;
+    },
+    orderBy: ReturnType<BookSeriesService['convertPartsOrderBy']>,
+  ) {
+    return findManyCursorConnection(
+      (args) =>
+        this.prisma.bookSeriesPart.findMany({
+          ...args,
+          where: {series: {id}},
+          orderBy,
+          select: {id: true},
+        }),
+      () =>
+        this.prisma.bookSeriesPart.count({
+          where: {series: {id}},
+        }),
       pagination,
     );
   }
