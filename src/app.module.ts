@@ -3,7 +3,6 @@ import {GraphQLFederationModule} from '@nestjs/graphql';
 import {ConfigModule, ConfigType} from '@nestjs/config';
 
 import {AppConfig} from './app.config';
-import {BooksResolverModule} from './books/books.resolver.module';
 import {WritingsResolverModule} from './writings/writings.resolver.module';
 import {AuthorsResolverModule} from './authors/authors.resolver.module';
 
@@ -17,7 +16,6 @@ import {AuthorsResolverModule} from './authors/authors.resolver.module';
       }),
     }),
     AuthorsResolverModule,
-    BooksResolverModule,
     WritingsResolverModule,
   ],
 })

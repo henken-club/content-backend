@@ -1,32 +1,64 @@
-import {Args, Parent, ResolveField, Resolver} from '@nestjs/graphql';
+import {
+  Args,
+  ID,
+  Parent,
+  Query,
+  ResolveField,
+  Resolver,
+  ResolveReference,
+} from '@nestjs/graphql';
 
 import {AuthorsService} from './authors.service';
+import {AuthorWritingsArgs} from './dto/writings.dto';
+import {FindAuthorArgs, FindAuthorPayload} from './dto/find-author.dto';
+import {AuthorEdgeEntity, AuthorEntity} from './author.entity';
 
-import {AuthorWritingsOrder} from '~/types/graphql';
+import {WritingConnectionEntity} from '~/writings/writings.entity';
 
-@Resolver('Author')
+@Resolver(() => AuthorEntity)
 export class AuthorsResolver {
   constructor(private readonly authors: AuthorsService) {}
 
-  @ResolveField('writings')
+  @ResolveReference()
+  resolveReference(reference: {id: string}) {
+    return this.authors.getById(reference.id);
+  }
+
+  @Query(() => AuthorEntity, {name: 'author'})
+  async getAuthor(
+    @Args('id', {type: () => ID}) id: string,
+  ): Promise<AuthorEntity> {
+    return this.authors.getById(id);
+  }
+
+  @Query(() => FindAuthorPayload, {name: 'findAuthor'})
+  async findAuthor(
+    @Args({type: () => FindAuthorArgs}) {id}: FindAuthorArgs,
+  ): Promise<FindAuthorPayload> {
+    const result = await this.authors.findById({id});
+    return {author: result};
+  }
+
+  @ResolveField(() => WritingConnectionEntity, {name: 'writings'})
   getUser(
-    @Parent() {id}: {id: string},
+    @Parent() {id}: AuthorEntity,
     @Args()
-    {
-      orderBy,
-      ...pagination
-    }: {
-      first: number | null;
-      after: string | null;
-      last: number | null;
-      before: string | null;
-      orderBy: AuthorWritingsOrder;
-    },
+    {orderBy, ...pagination}: AuthorWritingsArgs,
   ) {
     return this.authors.getWritings(
       id,
       pagination,
-      this.authors.convertOrderBy(orderBy),
+      this.authors.convertWritingOrderBy(orderBy),
     );
+  }
+}
+
+@Resolver(() => AuthorEdgeEntity)
+export class AuthorEdgesResolver {
+  constructor(private readonly service: AuthorsService) {}
+
+  @ResolveField((type) => AuthorEntity, {name: 'node'})
+  async resolveNode(@Parent() {node}: AuthorEdgeEntity): Promise<AuthorEntity> {
+    return this.service.getById(node.id);
   }
 }

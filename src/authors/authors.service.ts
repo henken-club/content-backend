@@ -1,26 +1,41 @@
 import {findManyCursorConnection} from '@devoxa/prisma-relay-cursor-connection';
 import {Injectable} from '@nestjs/common';
 
-import {PrismaService} from '~/prisma/prisma.service';
 import {
+  AuthorEntity,
   AuthorWritingsOrder,
   AuthorWritingsOrderField,
-  OrderDirection,
-} from '~/types/graphql';
+} from './author.entity';
+
+import {PrismaService} from '~/prisma/prisma.service';
+import {OrderDirection} from '~/pagination/order.enum';
 
 @Injectable()
 export class AuthorsService {
   constructor(private readonly prisma: PrismaService) {}
 
-  convertOrderBy({
+  async getById(id: string): Promise<AuthorEntity> {
+    return this.prisma.author.findUnique({
+      where: {id},
+      select: {id: true, name: true},
+      rejectOnNotFound: true,
+    });
+  }
+
+  async findById(where: {id: string}): Promise<AuthorEntity | null> {
+    return this.prisma.author.findUnique({
+      where,
+      select: {id: true, name: true},
+    });
+  }
+
+  convertWritingOrderBy({
     field,
     direction,
   }: AuthorWritingsOrder): [{author: {name: 'asc' | 'desc'}}] {
     switch (field) {
       case AuthorWritingsOrderField.BOOK_TITLE:
-        return [
-          {author: {name: direction === OrderDirection.ASC ? 'asc' : 'desc'}},
-        ];
+        return [{author: {name: OrderDirection.ASC}}];
     }
     throw new Error(`Unexpected order field: ${field}`);
   }
@@ -33,7 +48,7 @@ export class AuthorsService {
       last: number | null;
       before: string | null;
     },
-    orderBy: ReturnType<AuthorsService['convertOrderBy']>,
+    orderBy: ReturnType<AuthorsService['convertWritingOrderBy']>,
   ) {
     return findManyCursorConnection(
       (args) =>
