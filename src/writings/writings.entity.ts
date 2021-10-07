@@ -2,10 +2,12 @@ import {Field, ID, Int, ObjectType, Directive} from '@nestjs/graphql';
 
 import {AuthorEntity} from '~/authors/author.entity';
 import {BookEntity} from '~/books/books.entity';
-import {Connection} from '~/pagination/connection.interface';
-import {Edge} from '~/pagination/edge.interface';
-import {Node} from '~/pagination/node.interface';
-import {PageInfoEntity} from '~/pagination/page-info.entity';
+import {
+  Connection,
+  Edge,
+  Node,
+  PageInfoEntity,
+} from '~/pagination/pagination.types';
 
 @ObjectType('Writing', {implements: () => [Node]})
 @Directive('@key(fields: "id")')

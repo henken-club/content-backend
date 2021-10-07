@@ -8,11 +8,13 @@ import {
   Directive,
 } from '@nestjs/graphql';
 
-import {Connection} from '~/pagination/connection.interface';
-import {Edge} from '~/pagination/edge.interface';
-import {Node} from '~/pagination/node.interface';
-import {OrderDirection} from '~/pagination/order.enum';
-import {PageInfoEntity} from '~/pagination/page-info.entity';
+import {
+  Connection,
+  Edge,
+  Node,
+  OrderDirection,
+  PageInfoEntity,
+} from '~/pagination/pagination.types';
 
 @ObjectType('Author', {implements: () => [Node]})
 @Directive('@key(fields: "id")')

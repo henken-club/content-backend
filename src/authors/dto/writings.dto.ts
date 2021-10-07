@@ -2,7 +2,7 @@ import {ArgsType, Field, Int} from '@nestjs/graphql';
 
 import {AuthorWritingsOrder} from '../author.entity';
 
-import {PaginationArgs} from '~/pagination/pagination.args';
+import {PaginationArgs} from '~/pagination/pagination.types';
 
 @ArgsType()
 export class AuthorWritingsArgs extends PaginationArgs {
