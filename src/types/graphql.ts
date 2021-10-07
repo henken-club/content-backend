@@ -54,7 +54,7 @@ export interface PageInfo {
 
 export interface Writing extends Node {
     id: string;
-    auhtor: Author;
+    author: Author;
     book: Book;
 }
 

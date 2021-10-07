@@ -1,7 +1,7 @@
 type Writing implements Node {
   id: ID!
 
-  auhtor: Author!
+  author: Author!
   book: Book!
 }
 
