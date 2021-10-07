@@ -8,7 +8,6 @@ import {
 } from './author.entity';
 
 import {PrismaService} from '~/prisma/prisma.service';
-import {OrderDirection} from '~/pagination/order.enum';
 
 @Injectable()
 export class AuthorsService {
@@ -35,7 +34,7 @@ export class AuthorsService {
   }: AuthorWritingsOrder): [{author: {name: 'asc' | 'desc'}}] {
     switch (field) {
       case AuthorWritingsOrderField.BOOK_TITLE:
-        return [{author: {name: OrderDirection.ASC}}];
+        return [{author: {name: direction}}];
     }
     throw new Error(`Unexpected order field: ${field}`);
   }
