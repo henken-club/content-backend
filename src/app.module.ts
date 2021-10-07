@@ -5,6 +5,7 @@ import {ConfigModule, ConfigType} from '@nestjs/config';
 import {AppConfig} from './app.config';
 import {WritingsResolverModule} from './writings/writings.resolver.module';
 import {AuthorsResolverModule} from './authors/authors.resolver.module';
+import {BooksResolverModule} from './books/books.resolver.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import {AuthorsResolverModule} from './authors/authors.resolver.module';
         ...config.graphql,
       }),
     }),
+    BooksResolverModule,
     AuthorsResolverModule,
     WritingsResolverModule,
   ],

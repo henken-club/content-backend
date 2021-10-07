@@ -1,6 +1,7 @@
 import {Field, ID, Int, ObjectType, Directive} from '@nestjs/graphql';
 
 import {AuthorEntity} from '~/authors/author.entity';
+import {BookEntity} from '~/books/books.entity';
 import {Connection} from '~/pagination/connection.interface';
 import {Edge} from '~/pagination/edge.interface';
 import {Node} from '~/pagination/node.interface';
@@ -14,6 +15,9 @@ export class WritingEntity implements Node {
 
   @Field((type) => AuthorEntity)
   author!: {id: string};
+
+  @Field((type) => BookEntity)
+  book!: {id: string};
 }
 
 @ObjectType('WritingEdge', {implements: () => [Edge]})

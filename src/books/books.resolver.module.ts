@@ -1,10 +1,10 @@
 import {Module} from '@nestjs/common';
 
 import {BooksModule} from './books.module';
-import {BooksResolver} from './books.resolver';
+import {BookEdgesResolver, BooksResolver} from './books.resolver';
 
 @Module({
   imports: [BooksModule],
-  providers: [BooksResolver],
+  providers: [BooksResolver, BookEdgesResolver],
 })
 export class BooksResolverModule {}
