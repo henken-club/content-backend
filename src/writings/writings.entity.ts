@@ -1,7 +1,5 @@
 import {Field, ID, Int, ObjectType, Directive} from '@nestjs/graphql';
 
-import {AuthorEntity} from '~/authors/author.entity';
-import {BookEntity} from '~/books/books.entity';
 import {
   Connection,
   Edge,
@@ -15,10 +13,8 @@ export class WritingEntity implements Node {
   @Field((type) => ID)
   id!: string;
 
-  @Field((type) => AuthorEntity)
   author!: {id: string};
 
-  @Field((type) => BookEntity)
   book!: {id: string};
 }
 
