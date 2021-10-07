@@ -1,0 +1,26 @@
+interface Node {
+  id: ID!
+}
+
+interface Edge {
+  cursor: String!
+  node: Node!
+}
+
+interface Connection {
+  edges: [Edge!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+type PageInfo {
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+  startCursor: String
+  endCursor: String
+}
+
+enum OrderDirection {
+  ASC
+  DESC
+}

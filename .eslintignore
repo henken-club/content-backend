@@ -4,3 +4,5 @@ junit/
 
 # output
 dist/
+
+src/types/graphql.ts

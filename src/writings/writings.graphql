@@ -1,0 +1,17 @@
+type Writing implements Node {
+  id: ID!
+
+  auhtor: Author!
+  book: Book!
+}
+
+type WritingEdge implements Edge {
+  cursor: String!
+  node: Writing!
+}
+
+type WritingConnection implements Connection {
+  edges: [WritingEdge!]!
+  pageInfo: PageInfo!
+  totalCount: Int!
+}

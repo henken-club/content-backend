@@ -1,0 +1,16 @@
+enum AuthorWritingsOrderField {
+  BOOK_TITLE
+}
+
+input AuthorWritingsOrder {
+  field: AuthorWritingsOrderField!
+  direction: OrderDirection!
+}
+
+extend type Author @key(fields: "id") {
+  id: ID! @external
+
+  name: String!
+
+  writings: WritingConnection!
+}
