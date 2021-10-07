@@ -1,12 +1,12 @@
 # whole dependencies
-FROM node:16.9.1-slim AS deps
+FROM node:14.17.6-slim AS deps
 WORKDIR /app
 
 COPY package.json yarn.lock ./
 RUN yarn install --frozen-lockfile && yarn cache clean
 
 # production only dependencies
-FROM node:16.9.1-slim AS deps-production
+FROM node:14.17.6-slim AS deps-production
 WORKDIR /app
 
 COPY package.json yarn.lock ./
@@ -21,7 +21,7 @@ COPY src ./src
 RUN npm run build
 
 # runner
-FROM node:16.9.1-slim AS runner
+FROM node:14.17.6-slim AS runner
 WORKDIR /app
 
 ENV PORT 4000
