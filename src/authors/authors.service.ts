@@ -3,6 +3,8 @@ import {Injectable} from '@nestjs/common';
 
 import {
   AuthorEntity,
+  AuthorOrder,
+  AuthorOrderField,
   AuthorWritingsOrder,
   AuthorWritingsOrderField,
 } from './author.entity';
@@ -26,6 +28,35 @@ export class AuthorsService {
       where,
       select: {id: true, name: true},
     });
+  }
+
+  convertOrderBy({field, direction}: AuthorOrder): [{id: 'asc' | 'desc'}] {
+    switch (field) {
+      case AuthorOrderField.ID:
+        return [{id: direction}];
+    }
+    throw new Error(`Unexpected order field: ${field}`);
+  }
+
+  async getMany(
+    pagination: {
+      first: number | null;
+      after: string | null;
+      last: number | null;
+      before: string | null;
+    },
+    orderBy: ReturnType<AuthorsService['convertOrderBy']>,
+  ) {
+    return findManyCursorConnection(
+      (args) =>
+        this.prisma.author.findMany({
+          ...args,
+          orderBy,
+          select: {id: true},
+        }),
+      () => this.prisma.author.count({}),
+      pagination,
+    );
   }
 
   convertWritingOrderBy({

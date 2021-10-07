@@ -3,6 +3,8 @@ import {findManyCursorConnection} from '@devoxa/prisma-relay-cursor-connection';
 
 import {
   BookEntity,
+  BookOrder,
+  BookOrderField,
   BookWritingsOrder,
   BookWritingsOrderField,
 } from './books.entity';
@@ -26,6 +28,35 @@ export class BooksService {
       where,
       select: {id: true, title: true},
     });
+  }
+
+  convertOrderBy({field, direction}: BookOrder): [{id: 'asc' | 'desc'}] {
+    switch (field) {
+      case BookOrderField.ID:
+        return [{id: direction}];
+    }
+    throw new Error(`Unexpected order field: ${field}`);
+  }
+
+  async getMany(
+    pagination: {
+      first: number | null;
+      after: string | null;
+      last: number | null;
+      before: string | null;
+    },
+    orderBy: ReturnType<BooksService['convertOrderBy']>,
+  ) {
+    return findManyCursorConnection(
+      (args) =>
+        this.prisma.book.findMany({
+          ...args,
+          orderBy,
+          select: {id: true},
+        }),
+      () => this.prisma.book.count({}),
+      pagination,
+    );
   }
 
   convertWritingsOrderBy({

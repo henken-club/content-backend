@@ -46,11 +46,27 @@ export class AuthorConnectionEntity implements Connection {
   totalCount!: number;
 }
 
+export enum AuthorOrderField {
+  ID,
+}
+registerEnumType(AuthorOrderField, {
+  name: 'AuthorOrderField',
+});
+
+@InputType()
+export class AuthorOrder {
+  @Field((type) => OrderDirection)
+  direction!: OrderDirection;
+
+  @Field((type) => AuthorOrderField)
+  field!: AuthorOrderField;
+}
+
 export enum AuthorWritingsOrderField {
   BOOK_TITLE,
 }
 registerEnumType(AuthorWritingsOrderField, {
-  name: 'AuthorOrderField',
+  name: 'AuthorWritingOrderField',
 });
 
 @InputType()

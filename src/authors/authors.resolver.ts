@@ -11,7 +11,12 @@ import {
 import {AuthorsService} from './authors.service';
 import {AuthorWritingsArgs} from './dto/writings.dto';
 import {FindAuthorArgs, FindAuthorPayload} from './dto/find-author.dto';
-import {AuthorEdgeEntity, AuthorEntity} from './author.entity';
+import {
+  AuthorConnectionEntity,
+  AuthorEdgeEntity,
+  AuthorEntity,
+} from './author.entity';
+import {ManyAuthorsArgs} from './dto/many-authors.dto';
 
 import {WritingConnectionEntity} from '~/writings/writings.entity';
 
@@ -49,6 +54,17 @@ export class AuthorsResolver {
       id,
       pagination,
       this.authors.convertWritingOrderBy(orderBy),
+    );
+  }
+
+  @Query(() => AuthorConnectionEntity, {name: 'manyAuthors'})
+  async manyAuthors(
+    @Args({type: () => ManyAuthorsArgs})
+    {orderBy, ...pagination}: ManyAuthorsArgs,
+  ): Promise<AuthorConnectionEntity> {
+    return this.authors.getMany(
+      pagination,
+      this.authors.convertOrderBy(orderBy),
     );
   }
 }

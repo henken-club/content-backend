@@ -1,9 +1,18 @@
-import {Field, ID, Int, ObjectType, Directive} from '@nestjs/graphql';
+import {
+  Field,
+  ID,
+  Int,
+  ObjectType,
+  Directive,
+  registerEnumType,
+  InputType,
+} from '@nestjs/graphql';
 
 import {
   Connection,
   Edge,
   Node,
+  OrderDirection,
   PageInfoEntity,
 } from '~/pagination/pagination.types';
 
@@ -35,4 +44,20 @@ export class BookSeriesConnectionEntity implements Connection {
 
   @Field(() => Int)
   totalCount!: number;
+}
+
+export enum BookSeriesOrderField {
+  ID,
+}
+registerEnumType(BookSeriesOrderField, {
+  name: 'BookSeriesOrderField',
+});
+
+@InputType()
+export class BookSeriesOrder {
+  @Field((type) => OrderDirection)
+  direction!: OrderDirection;
+
+  @Field((type) => BookSeriesOrderField)
+  field!: BookSeriesOrderField;
 }

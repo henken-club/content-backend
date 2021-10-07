@@ -13,7 +13,12 @@ import {
   FindBookSeriesArgs,
   FindBookSeriesPayload,
 } from './dto/find-bookseries.dto';
-import {BookSeriesEdgeEntity, BookSeriesEntity} from './bookseries.entity';
+import {
+  BookSeriesConnectionEntity,
+  BookSeriesEdgeEntity,
+  BookSeriesEntity,
+} from './bookseries.entity';
+import {ManyBookSeriesArgs} from './dto/many-bookseries.dto';
 
 @Resolver(() => BookSeriesEntity)
 export class BookSeriesResolver {
@@ -37,6 +42,17 @@ export class BookSeriesResolver {
   ): Promise<FindBookSeriesPayload> {
     const result = await this.bookSeries.findById({id});
     return {bookSeries: result};
+  }
+
+  @Query(() => BookSeriesConnectionEntity, {name: 'manyBookSeries'})
+  async manyBookSeries(
+    @Args({type: () => ManyBookSeriesArgs})
+    {orderBy, ...pagination}: ManyBookSeriesArgs,
+  ): Promise<BookSeriesConnectionEntity> {
+    return this.bookSeries.getMany(
+      pagination,
+      this.bookSeries.convertOrderBy(orderBy),
+    );
   }
 }
 
