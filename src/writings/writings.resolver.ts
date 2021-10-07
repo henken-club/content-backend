@@ -33,7 +33,9 @@ export class WritingEdgesResolver {
   constructor(private readonly writings: WritingsService) {}
 
   @ResolveField(() => WritingEntity, {name: 'node'})
-  async resolveNode(@Parent() {node}: {node: {id: string}}) {
-    return this.writings.getWriting(node.id);
+  async resolveNode(
+    @Parent() {node}: {node: {id: string}},
+  ): Promise<WritingEntity> {
+    return this.writings.getById(node.id);
   }
 }

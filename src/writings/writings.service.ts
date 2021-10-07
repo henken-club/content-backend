@@ -1,18 +1,21 @@
 import {Injectable} from '@nestjs/common';
 
+import {WritingEntity} from './writings.entity';
+
 import {PrismaService} from '~/prisma/prisma.service';
 
 @Injectable()
 export class WritingsService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async getWriting(id: string): Promise<{
-    author: {id: string};
-    book: {id: string};
-  }> {
+  async getById(id: string): Promise<WritingEntity> {
     return this.prisma.writing.findUnique({
       where: {id},
-      select: {author: {select: {id: true}}, book: {select: {id: true}}},
+      select: {
+        id: true,
+        author: {select: {id: true}},
+        book: {select: {id: true}},
+      },
       rejectOnNotFound: true,
     });
   }
