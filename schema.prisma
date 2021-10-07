@@ -31,4 +31,6 @@ model Writing {
 
   book   Book   @relation(fields: [bookId], references: [id])
   bookId String
+
+  @@unique([authorId, bookId])
 }
