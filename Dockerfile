@@ -3,6 +3,7 @@ WORKDIR /app
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
   libssl-dev=1.1.0l-1~deb9u4 \
+  curl=7.52.1-5+deb9u16 \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/*
 
