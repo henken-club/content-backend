@@ -3,10 +3,7 @@ import {GraphQLFederationModule} from '@nestjs/graphql';
 import {ConfigModule, ConfigType} from '@nestjs/config';
 
 import {AppConfig} from './app.config';
-import {WritingsResolverModule} from './writings/writings.resolver.module';
-import {AuthorsResolverModule} from './authors/authors.resolver.module';
-import {BooksResolverModule} from './books/books.resolver.module';
-import {BookSeriesResolverModule} from './bookseries/bookseries.resolver.module';
+import {ContentResolversModule} from './contents/resolvers.module';
 
 @Module({
   imports: [
@@ -17,10 +14,7 @@ import {BookSeriesResolverModule} from './bookseries/bookseries.resolver.module'
         ...config.graphql,
       }),
     }),
-    BooksResolverModule,
-    BookSeriesResolverModule,
-    AuthorsResolverModule,
-    WritingsResolverModule,
+    ContentResolversModule,
   ],
 })
 export class AppModule {}
